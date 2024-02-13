@@ -1,0 +1,39 @@
+### Request all Videogames without ssl
+GET http://localhost:8080/videojocs
+Accept: application/json
+
+### Request a specific Videogame
+GET http://localhost:8080/videojocs/1
+Accept: application/json
+
+### Request from a specific corporation
+GET http://localhost:8080/videojocs/empresa/Rockstar
+
+### Create a new Videogame
+POST http://localhost:8080/videojocs
+Content-Type: application/json
+Accept: application/json
+
+{
+  "TITOL": "Iron Man",
+  "ANY": "2021",
+  "MODALITAT": "Action",
+  "EMPRESA": "ubisoft"
+}
+
+### Update a Videogame
+PUT http://localhost:8080/videojocs/update
+Content-Type: application/json
+Accept: application/json
+
+{
+  "ID": 1,
+  "TITOL": "The Legend of Zelda: Breath of the Wild",
+  "ANY": "2017",
+  "MODALITAT": "Aventura",
+  "EMPRESA": "Nintendo"
+}
+
+### Delete a Videogame
+DELETE http://localhost:8080/videojocs/delete/1
+Accept: application/json
