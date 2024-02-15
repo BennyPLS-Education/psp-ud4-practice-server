@@ -10,7 +10,7 @@ extern crate rocket;
 
 /// HTTP handler for getting all video games.
 #[get("/")]
-fn get_all_video_games() -> Json<Vec<VideoGame>> {
+async fn get_all_video_games() -> Json<Vec<VideoGame>> {
     let games = database::read_games();
 
     Json(games)
@@ -18,7 +18,7 @@ fn get_all_video_games() -> Json<Vec<VideoGame>> {
 
 /// HTTP handler for getting a video game by ID.
 #[get("/<id>")]
-fn get_game_by_id(id: i32) -> Result<Json<VideoGame>, Json<String>> {
+async fn get_game_by_id(id: i32) -> Result<Json<VideoGame>, Json<String>> {
     let game = database::read_game_by_id(id);
 
     match game {
@@ -29,7 +29,7 @@ fn get_game_by_id(id: i32) -> Result<Json<VideoGame>, Json<String>> {
 
 /// HTTP handler for getting a video game by corporation.
 #[get("/empresa/<corporation>")]
-fn get_game_by_corporation(corporation: String) -> Json<Vec<VideoGame>> {
+async fn get_game_by_corporation(corporation: String) -> Json<Vec<VideoGame>> {
     let games = database::read_game_by_corporation(&corporation);
 
     Json(games)
@@ -37,7 +37,7 @@ fn get_game_by_corporation(corporation: String) -> Json<Vec<VideoGame>> {
 
 /// HTTP handler for creating a video game.
 #[post("/", data = "<game>")]
-fn create_game(game: Json<VideoGameCreate>) -> Json<String> {
+async fn create_game(game: Json<VideoGameCreate>) -> Json<String> {
     match database::create_game(VideoGame::from(game.into_inner())) {
         Ok(_) => Json("Game created".to_string()),
         Err(_) => Json("Error creating game".to_string()),
@@ -46,7 +46,7 @@ fn create_game(game: Json<VideoGameCreate>) -> Json<String> {
 
 /// HTTP handler for updating a video game.
 #[put("/update", data = "<game>")]
-fn update_game(game: Json<VideoGame>) -> Json<String> {
+async fn update_game(game: Json<VideoGame>) -> Json<String> {
     let game = game.into_inner();
     match database::update_game(game.id, game) {
         Ok(_) => Json("Game updated".to_string()),
@@ -56,7 +56,7 @@ fn update_game(game: Json<VideoGame>) -> Json<String> {
 
 /// HTTP Handler for deleting a game.
 #[delete("/delete/<id>")]
-fn delete_game(id: i32) -> Json<String> {
+async fn delete_game(id: i32) -> Json<String> {
     match database::delete_game(id) {
         Ok(_) => Json("Game deleted".to_string()),
         Err(_) => Json("Error deleting game".to_string()),
