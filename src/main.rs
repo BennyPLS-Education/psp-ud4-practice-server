@@ -1,3 +1,4 @@
+mod catchs;
 mod database;
 mod storage;
 
@@ -68,15 +69,20 @@ async fn delete_game(id: i32) -> Json<String> {
 fn rocket() -> Rocket<Build> {
     database::initialize();
 
-    rocket::build().mount(
-        "/videojocs",
-        routes![
-            get_all_video_games,
-            get_game_by_id,
-            get_game_by_corporation,
-            create_game,
-            update_game,
-            delete_game
-        ],
-    )
+    rocket::build()
+        .register(
+            "/",
+            catchers![catchs::not_found, catchs::unprocessable_entity],
+        )
+        .mount(
+            "/videojocs",
+            routes![
+                get_all_video_games,
+                get_game_by_id,
+                get_game_by_corporation,
+                create_game,
+                update_game,
+                delete_game
+            ],
+        )
 }
