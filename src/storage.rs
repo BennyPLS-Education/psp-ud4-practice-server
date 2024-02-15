@@ -6,7 +6,7 @@ use std::{io, process};
 /// Opens a file in write-only mode.
 ///
 /// If the file does not exist, it will be created.
-/// If the file already exists, it will be erased.
+/// If the file already exists, it will be overwritten.
 pub fn create(path: &PathBuf) -> File {
     match File::create(&path) {
         Ok(fs) => fs,

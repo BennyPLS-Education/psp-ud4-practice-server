@@ -1,5 +1,5 @@
-mod catchs;
 mod database;
+mod error_handlers;
 mod storage;
 
 use crate::database::{VideoGame, VideoGameCreate};
@@ -72,7 +72,10 @@ fn rocket() -> Rocket<Build> {
     rocket::build()
         .register(
             "/",
-            catchers![catchs::not_found, catchs::unprocessable_entity],
+            catchers![
+                error_handlers::not_found,
+                error_handlers::unprocessable_entity
+            ],
         )
         .mount(
             "/videojocs",

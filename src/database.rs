@@ -8,7 +8,7 @@ const FILE: &str = "Videojocs_DB.txt";
 /// Represents a video game creation object.
 ///
 /// This struct is used to create a new video game.
-#[derive(serde::Deserialize, Debug)]
+#[derive(Debug, Deserialize)]
 pub struct VideoGameCreate {
     #[serde(rename = "TITOL")]
     title: String,

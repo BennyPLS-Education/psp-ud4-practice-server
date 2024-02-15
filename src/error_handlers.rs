@@ -2,6 +2,7 @@ use rocket::serde::json::Json;
 use rocket::Request;
 use serde::Serialize;
 
+/// Represents an error response.
 #[derive(Debug, Serialize)]
 pub struct Error {
     message: String,
@@ -19,6 +20,7 @@ impl Error {
     }
 }
 
+/// Handles a 404 error by returning a JSON response with an error message.
 #[catch(404)]
 pub fn not_found(req: &Request) -> Json<Error> {
     Json(Error::new(
@@ -31,6 +33,7 @@ pub fn not_found(req: &Request) -> Json<Error> {
     ))
 }
 
+/// Handles a 422 error by returning a JSON response with an error message.
 #[catch(422)]
 pub fn unprocessable_entity() -> Json<Error> {
     Json(Error::new(
