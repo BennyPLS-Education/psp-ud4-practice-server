@@ -3,6 +3,8 @@ use crate::storage::load;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
+const FILE: &str = "Videojocs_DB.txt";
+
 /// Represents a video game creation object.
 ///
 /// This struct is used to create a new video game.
@@ -95,14 +97,14 @@ pub fn initialize() {
 
 /// Loads the video game database.
 fn get_data() -> Vec<VideoGame> {
-    let data = load(&PathBuf::from("games.json"));
+    let data = load(&PathBuf::from(FILE));
     serde_json::from_str(&data).unwrap_or(Vec::new())
 }
 
 /// Saves the video game database.
 fn save_data(games: &Vec<VideoGame>) -> Result<(), std::io::Error> {
     let data = serde_json::to_string(&games).unwrap();
-    storage::save(&data, &PathBuf::from("games.json"))
+    storage::save(&data, &PathBuf::from(FILE))
 }
 
 /// Creates a new video game.
