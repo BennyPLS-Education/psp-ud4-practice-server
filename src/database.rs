@@ -1,6 +1,9 @@
 use crate::storage;
 use crate::storage::load;
+use rocket::outcome::IntoOutcome;
 use serde::{Deserialize, Serialize};
+use std::io;
+use std::io::ErrorKind::NotFound;
 use std::path::PathBuf;
 
 const FILE: &str = "Videojocs_DB.txt";
@@ -133,11 +136,17 @@ pub fn read_game_by_corporation(corporation: &str) -> Vec<VideoGame> {
 }
 
 /// Updates a video game by its id.
-pub fn update_game(id: i32, game: VideoGame) -> Result<(), std::io::Error> {
+pub fn update_game(id: i32, game: VideoGame) -> io::Result<()> {
     let mut games = get_data();
-    let index = games.iter().position(|g| g.id == id).unwrap();
-    games[index] = game;
-    save_data(&games)
+    let index = games.iter().position(|g| g.id == id);
+
+    match index {
+        Some(index) => {
+            games[index] = game;
+            save_data(&games)
+        }
+        None => Err(io::Error::new(NotFound, "Game not found")),
+    }
 }
 
 /// Deletes a video game by its id.

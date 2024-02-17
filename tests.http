@@ -3,7 +3,7 @@ GET http://localhost:8080/videojocs
 Accept: application/json
 
 ### Request a specific Videogame
-GET http://localhost:8080/videojocs/1
+GET http://localhost:8080/videojocs/2
 Accept: application/json
 
 ### Request from a specific corporation
