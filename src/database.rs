@@ -1,6 +1,5 @@
 use crate::storage;
 use crate::storage::load;
-use rocket::outcome::IntoOutcome;
 use serde::{Deserialize, Serialize};
 use std::io;
 use std::io::ErrorKind::NotFound;
@@ -105,13 +104,13 @@ fn get_data() -> Vec<VideoGame> {
 }
 
 /// Saves the video game database.
-fn save_data(games: &Vec<VideoGame>) -> Result<(), std::io::Error> {
+fn save_data(games: &Vec<VideoGame>) -> Result<(), io::Error> {
     let data = serde_json::to_string(&games).unwrap();
     storage::save(&data, &PathBuf::from(FILE))
 }
 
 /// Creates a new video game.
-pub fn create_game(game: VideoGame) -> Result<(), std::io::Error> {
+pub fn create_game(game: VideoGame) -> Result<(), io::Error> {
     let mut games = get_data();
     games.push(game);
     save_data(&games)
@@ -150,7 +149,7 @@ pub fn update_game(id: i32, game: VideoGame) -> io::Result<()> {
 }
 
 /// Deletes a video game by its id.
-pub fn delete_game(id: i32) -> Result<(), std::io::Error> {
+pub fn delete_game(id: i32) -> Result<(), io::Error> {
     let mut games = get_data();
     games.retain(|game| game.id != id);
     save_data(&games)
